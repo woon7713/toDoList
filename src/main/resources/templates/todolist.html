@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>todoList</title>
+    <link rel="stylesheet" th:href="@{/style.css}"/>
+</head>
+<body>
+
+<div class="container">
+    <h1>todolist</h1>
+
+<form th:action="@{todos}" method="post">
+    <input type="text" name="task" placeholder="Enter a new task" required>
+    <button type="submit">추가</button>
+</form>
+
+<div class="todo-list">
+    <ul>
+        <li th:each="task : ${todos}">
+
+            <!-- 완료-->
+            <form th:action="@{/todos/toggle}" method="post" style="display:inline;">
+                <input type="hidden" name="taskId" th:value="${task.id}" />
+                <input type="checkbox" onclick="this.form.submit()" th:checked="${task.completed}" />
+            </form>
+
+            <!-- 설명 -->
+            <span th:style="${task.completed} ? 'text-decoration: line-through;' : ''"
+                  th:text="${task.description}">할 일 설명</span>
+
+            <!-- 설명 수정 -->
+            <form th:action="@{/todos/update}" method="post" style="display:inline;">
+                <input type="hidden" name="taskId" th:value="${task.id}" />
+                <input type="text" name="newDescription" placeholder="Edit task" required />
+                <button type="submit">Update</button>
+            </form>
+
+
+
+
+            <!-- 삭제 -->
+            <form th:action="@{/todos/delete}" method="post" style="display:inline;">
+                <input type="hidden" name="taskId" th:value="${task.id}" />
+                <button type="submit">Delete</button>
+            </form>
+
+
+        </li>
+    </ul>
+</div>
+
+
+</div>
+
+
+</body>
+</html>
